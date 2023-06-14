@@ -1,0 +1,60 @@
+set number
+set termguicolors
+
+call plug#begin()
+Plug 'scrooloose/nerdtree'
+Plug 'Yggdroot/indentLine'
+Plug 'scrooloose/nerdcommenter'
+Plug 'mklabs/split-term.vim'
+Plug 'lissaferreira/dalton-vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'preservim/nerdtree'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-airline/vim-airline'
+Plug 'dense-analysis/ale'
+Plug 'gko/vim-coloresque'
+Plug 'thaerkh/vim-indentguides'
+call plug#end()
+color dalton
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline_theme='dalton'
+
+
+" Configurações do CoC.nvim
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" NERDTree
+map <F3> :NERDTreeToggle<CR>
+
+let NERDTreeShowHidden=1
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+filetype plugin on
+let g:NERDSpaceDelims = 1
+
+let g:airline_powerline_fonts          = 1
+let g:airline_symbols                  = {}
+let g:airline_symbols.branch           = ''
+let g:airline_section_b                = '%{fugitive#head()}'
+let g:airline#extensions#hunks#enabled = 0
